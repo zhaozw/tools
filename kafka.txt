@@ -1,0 +1,28 @@
+现在比较新的版本都集成了 Zookeeper ,无需另行下载. 尽量下载最新版本吧.
+本例 下载的是 kafka_2.13-2.4.0.tgz
+解压至 D:\Kafka\kafka_2.13-2.4.0 下面
+也请确保本机配置了 JDK
+
+2. 启动服务
+需遵循以下几步, 依次打开新的命令行启动, 也不要关闭之前的命令行窗口
+cmd 先进入至 D:\Kafka\kafka_2.13-2.4.0
+
+启动 Zookeeper 服务, 默认端口 2181
+bin\windows\zookeeper-server-start.bat config\zookeeper.properties
+1
+启动 Kafka 服务,默认端口 9092
+bin\windows\kafka-server-start.bat config\server.properties
+1
+创建 Topic
+bin\windows\kafka-topics.bat --create --bootstrap-server localhost:2181 --replication-factor 1 --partitions 1 --topic test
+1
+该命令 表示创建一个 名为 test 的主题，1 个副本，1个分区
+启动生产者
+bin\windows\kafka-console-producer.bat --broker-list localhost:9092 --topic test
+1
+该命令可以从控制台获取输入，将其作为 消息 存储至 kafka， 再由消费者读取，一次回车代表一条消息
+
+启动消费者
+bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic test --from-beginning
+1
+该命令 会读取kafka中存储的消息， – from-beginning 表示从最开始，意味着每次重启消费者，都会将之前的信息读取过来
