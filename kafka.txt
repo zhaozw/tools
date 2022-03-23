@@ -26,3 +26,5 @@ bin\windows\kafka-console-producer.bat --broker-list localhost:9092 --topic test
 bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic test --from-beginning
 1
 该命令 会读取kafka中存储的消息， – from-beginning 表示从最开始，意味着每次重启消费者，都会将之前的信息读取过来
+
+
