@@ -1,0 +1,45 @@
+agent-schoolmaster 移植步骤
+java -jar migrator-0.0.1-SNAPSHOT.jar ModifyNacosAction D:\gitcode\songshuai\agent\agent-schoolmaster
+如果parent的groupid是org.springframework.boot，删除parent节点
+由于顶层的pom文件里面没有dependencyManagement，所以工具没把相应的依赖加进来，需要手动添加，可以加到properties标签后面
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- configure user spring cloud / spring boot versions -->
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- configure spring cloud huawei version -->
+      <dependency>
+        <groupId>com.huaweicloud</groupId>
+        <artifactId>spring-cloud-huawei-bom</artifactId>
+        <version>${spring-cloud-huawei.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  
+修改bootstrap.yaml的spring.application.name，由于没有用到注册中心，spring.cloud.servicecomb.discovery.enabled: false
+配置添加到配置中心，使用自定义配置spring.cloud.servicecomb.config.kie.customLabel和spring.cloud.servicecomb.config.kie.customLabelValue，可以通过不同的customLabelValue对应不同的profile
+cse的配置管理可以创建自定义配置标签的key对应customLabel，value对应customLabelValue，自定义配置不可以设置环境
+bootstrap.yaml除了spring.application.name不一样，其它基本都一样，如果不同项目的配置不一样customLabel和customLabelValue
+
+非顶层pom文件里面如果有properties标签，也会加入如下属性，可以删除
+  <properties>
+    <spring-boot.version>2.3.5.RELEASE</spring-boot.version>
+    <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
+    <spring-cloud-huawei.version>1.9.0-Hoxton</spring-cloud-huawei.version>
+  </properties>
