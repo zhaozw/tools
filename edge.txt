@@ -1,0 +1,7 @@
+VertxRestTransport
+CommonHttpEdgeDispatcher
+RestServerVerticle
+URLMappedEdgeDispatcher
+RestBodyHandler
+VertxRestDispatcher
+ProducerOperationHandler 做一下处理，比如参数验证
