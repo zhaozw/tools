@@ -8,3 +8,6 @@ VertxServerResponseToHttpServletResponse requestEx.getAsyncContext().complete()�
 上面的某一步应该有把Response写到原始的Response，或者输出流。
 SyncResponseExecutor
 VertxClientResponseToHttpServletResponse
+
+AbstractRestInvocation invoke doInvoke调用Invocation的next，该方法主要是依次调用handlers，
+ConsumerQpsFlowControlHandler LoadbalanceHandler（RouterServerListFilter过滤）  FaultInjectionHandler  TransportClientHandler，handler通过next调用后handler，并传入回调函数，handler调用顺序是从前往后，回调函数是从后往前，逻辑类似顺序函数流程的嵌套调用
