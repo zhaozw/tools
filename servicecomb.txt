@@ -2,6 +2,9 @@ RestClientInvocation.invoke是发送rpc请求的地方  handleResponse接收请�
 vertx HttpClientImpl.request发送请求
 VertxClientRequestToHttpServletRequest
 RestClientRequestImpl
-LoadbalanceHandler.send invocation.next里面处理结果 resp为Response类型
+LoadbalanceHandler.send invocation.next里面处理结果 resp为Response类型 之后调用handle的asyncResp的handle方法，这个类似装饰模式，多执行了一下ServiceCombServerStats.checkAndReleaseTryingChance(invocation);
+然后回到AbstractRestInvocation的sendResponseQuietly sendResponse executeHttpServerFilters方法，通过HttpServerFilterBeforeSendResponseExecutor执行filters，然后执行onExecuteHttpServerFiltersFinish
+VertxServerResponseToHttpServletResponse requestEx.getAsyncContext().complete()这句什么都没执行，可能可以定制，最后调用Invocation的onFinish，并发送InvocationFinishEvent事件
+上面的某一步应该有把Response写到原始的Response，或者输出流。
 SyncResponseExecutor
 VertxClientResponseToHttpServletResponse
