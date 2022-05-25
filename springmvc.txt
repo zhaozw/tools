@@ -1,0 +1,2 @@
+请求的时候经常报错，路径找不到，可以查看
+AbstractHandlerMethodMapping lookupHandlerMethod（查找路径匹配的方法） mappingRegistry addMatchingMappings 方法里面看所有的路径，路径是通过HandlerMethod构造的，
