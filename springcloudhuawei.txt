@@ -19,4 +19,25 @@ GovernanceRequestMappingHandlerAdapter
 
       return dcs.get();
       
-发送请求给provider的时候
+发送请求给provider的时候，如果是通过RestTemplate的方式，则增加两个Interceptor，一个是重试一个是负载均衡
+  @Bean
+  @ConditionalOnMissingBean
+  @ConditionalOnMissingClass("org.springframework.retry.support.RetryTemplate")
+  public RestTemplateCustomizer governanceRestTemplateCustomizer(
+      final GovernanceClientHttpRequestInterceptor governanceClientHttpRequestInterceptor,
+      final LoadBalancerInterceptor loadBalancerInterceptor) {
+    return restTemplate -> {
+      List<ClientHttpRequestInterceptor> list = new ArrayList<>(
+          restTemplate.getInterceptors());
+      list.add(loadBalancerInterceptor);
+      list.add(governanceClientHttpRequestInterceptor);
+      restTemplate.setInterceptors(list);
+    };
+  }
+  
+如果是通过feign，增加重试功能，也是通过aop来实现的，中间还有Request转GovernanceRequest的处理
+  @Bean
+  @ConditionalOnClass(name = "org.springframework.cloud.openfeign.loadbalancer.FeignBlockingLoadBalancerClient")
+  public GovernanceFeignClient governanceFeignClient(RetryHandler retryHandler) {
+    return new GovernanceFeignClient(retryHandler);
+  }
