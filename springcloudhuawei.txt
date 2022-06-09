@@ -1,0 +1,22 @@
+gateway发起调用治理是通过
+GovernanceGatewayFilterFactory
+        toRun = addRetry(exchange, governanceRequest, toRun);
+        toRun = addCircuitBreaker(exchange, governanceRequest, toRun);
+        toRun = addBulkhead(governanceRequest, toRun);
+        toRun = addRateLimiter(governanceRequest, toRun);
+        
+consumer收到gateway请求，通过aop的方式拦截springmvc请求
+GovernanceRequestMappingHandlerAdapter
+    CheckedFunction0<Object> next = pjp::proceed;
+    DecorateCheckedSupplier<Object> dcs = Decorators.ofCheckedSupplier(next);
+
+    try {
+      SpringCloudInvocationContext.setInvocationContext();
+
+      addCircuitBreaker(dcs, governanceRequest);
+      addBulkhead(dcs, governanceRequest);
+      addRateLimiting(dcs, governanceRequest);
+
+      return dcs.get();
+      
+发送请求给provider的时候
