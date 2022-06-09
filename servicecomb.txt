@@ -1,3 +1,5 @@
+如果是gateway请求的consumer，会先触发provider接收请求的过程，如果还会调用其它微服务，则触发consumer发送请求的过程
+
 consumer发送请求的过程
 RestClientInvocation.invoke是发送rpc请求的地方  handleResponse接收请求的方法 processResponseBody
 vertx HttpClientImpl.request发送请求
@@ -19,3 +21,4 @@ ProducerOperationHandler  handle  invoke里面判断同步还是异步
 结束后也会调用AbstractRestInvocation的sendResponseQuietly sendResponse等方法，同上，后续流程和consumer一样
 
 都会用到swagger-invocation
+
