@@ -41,3 +41,9 @@ GovernanceRequestMappingHandlerAdapter
   public GovernanceFeignClient governanceFeignClient(RetryHandler retryHandler) {
     return new GovernanceFeignClient(retryHandler);
   }
+
+
+
+isEnableServicePolling
+当注册中心没微服务的情况下， 先启动网关， 在启动微服务， 调用不通。 使用locator作为spring cloud gateway路由策略的情况。 就是cse-v1的网关的例子。/{服务名}/url  这种规则的情况
+是由于先启动网关，此时注册中心没有consumer的微服务，之后启动gateway里面是不包含这个微服务的。
