@@ -24,3 +24,6 @@ ProducerOperationHandler  handle  invoke里面判断同步还是异步
 
 
 test-cse-0620.obs.cidc-rp-2001.jszthcso.joint.cmecloud.cn
+
+
+对header做处理可以通过HttpClientFilter，或者扩展自己得HttpClientFilter
